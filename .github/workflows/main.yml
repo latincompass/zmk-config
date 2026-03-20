@@ -1,0 +1,39 @@
+name: ZMK Firmware Build
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    container:
+      image: ghcr.io/zmkfirmware/zmk-build-arm:stable
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Cache modules
+        uses: actions/cache@v4
+        with:
+          path: |
+            modules
+            zephyr
+            .west
+          key: ${{ runner.os }}-zmk
+
+      - name: West init & update
+        run: |
+          west init -l config
+          west update
+
+      - name: Build firmware
+        run: west build -s zmk/app -b seeeduino_xiao_ble -- -DZMK_CONFIG=$GITHUB_WORKSPACE/config
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: firmware
+          path: build/zephyr/zmk.uf2
