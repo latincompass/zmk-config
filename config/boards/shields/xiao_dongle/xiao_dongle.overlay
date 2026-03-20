@@ -1,0 +1,14 @@
+/ {
+    chosen {
+        zmk,kscan = &kscan;
+        zmk,ble-snapshot = &ble_snapshot;
+    };
+    ble_snapshot: ble_snapshot {
+        compatible = "zmk,ble-snapshot";
+        status = "okay";
+    };
+    kscan {
+        compatible = "zmk,kscan-empty";
+        status = "okay";
+    };
+};
