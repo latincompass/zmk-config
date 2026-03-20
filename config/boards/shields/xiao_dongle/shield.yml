@@ -1,1 +1,7 @@
 file_format: 1
+name: XIAO BLE Dongle
+type: shield
+url: https://example.com
+outputs:
+  - id: default
+    label: Default
